@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import 'array-flat-polyfill';
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup } from 'lit';
 import { property, customElement, eventOptions } from 'lit/decorators.js';
@@ -81,7 +82,7 @@ import {
   HOUR_24,
 } from './const';
 import parse from 'parse-duration';
-import tinycolor from '@ctrl/tinycolor';
+import { TinyColor } from '@ctrl/tinycolor';
 import { actionHandler } from './action-handler-directive';
 import { OverrideFrontendLocaleData } from './types-ha';
 
@@ -137,7 +138,7 @@ class ChartsCard extends LitElement {
 
   private _entities: HassEntity[] = [];
 
-  private _interval?: number;
+  private _interval?: number | null;
 
   private _intervalTimeout?: NodeJS.Timeout;
 
@@ -187,7 +188,6 @@ class ChartsCard extends LitElement {
         this._updateOnInterval();
       });
       // Valid because setConfig has been done.
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this._intervalTimeout = setInterval(() => this._updateOnInterval(), this._interval!);
     }
   }
@@ -248,7 +248,6 @@ class ChartsCard extends LitElement {
         this._entities[index] = entityState;
         updated = true;
         if (this._graphs && this._graphs[index]) {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           this._graphs[index]!.hass = this._hass!;
         }
         if (serie.show.in_header === 'raw') {
@@ -433,13 +432,10 @@ class ChartsCard extends LitElement {
           if (serie.entity) {
             const editMode = getLovelace()?.editMode;
             // disable caching for editor
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const caching = editMode === true ? false : this._config!.cache;
             const graphEntry = new GraphEntry(
               index,
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               this._graphSpan!,
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               caching,
               serie,
               this._config?.span,
@@ -454,12 +450,10 @@ class ChartsCard extends LitElement {
         this._config.series.forEach((serie, index) => {
           if (serie.show.in_chart) {
             this._colors.push(this._headerColors[index]);
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             this._config!.series_in_graph.push(serie);
           }
           if (this._config?.experimental?.brush && serie.show.in_brush) {
             this._brushColors.push(this._headerColors[index]);
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             this._config!.series_in_brush.push(serie);
           }
         });
@@ -503,7 +497,6 @@ class ChartsCard extends LitElement {
     this._reset();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _generateYAxisConfig(config: ChartCardConfig): ApexYAxis[] | undefined {
     if (!config.yaxis) return undefined;
     const burned: boolean[] = [];
@@ -511,7 +504,6 @@ class ChartsCard extends LitElement {
     const yaxisConfig: ApexYAxis[] = config.series_in_graph.map((serie, serieIndex) => {
       let idx = -1;
       if (config.yaxis?.length !== 1) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         idx = config.yaxis!.findIndex((yaxis) => {
           return yaxis.id === serie.yaxis_id;
         });
@@ -521,22 +513,18 @@ class ChartsCard extends LitElement {
       if (idx < 0) {
         throw new Error(`yaxis_id: ${serie.yaxis_id} doesn't exist.`);
       }
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let yAxisDup: any = JSON.parse(JSON.stringify(config.yaxis![idx]));
       delete yAxisDup.apex_config;
       delete yAxisDup.decimals;
       yAxisDup.decimalsInFloat =
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         config.yaxis![idx].decimals === undefined ? DEFAULT_FLOAT_PRECISION : config.yaxis![idx].decimals;
       if (this._yAxisConfig?.[idx].series_id) {
         this._yAxisConfig?.[idx].series_id?.push(serieIndex);
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this._yAxisConfig![idx].series_id! = [serieIndex];
       }
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       if (config.yaxis![idx].apex_config) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         yAxisDup = mergeDeep(yAxisDup, config.yaxis![idx].apex_config);
         delete yAxisDup.apex_config;
       }
@@ -545,7 +533,6 @@ class ChartsCard extends LitElement {
       if (burned[idx]) {
         yAxisDup.show = false;
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         yAxisDup.show = config.yaxis![idx].show === undefined ? true : config.yaxis![idx].show;
         burned[idx] = true;
       }
@@ -796,7 +783,6 @@ class ChartsCard extends LitElement {
     const now = new Date();
     this._lastUpdated = now;
     const editMode = getLovelace()?.editMode;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const caching = editMode === true ? false : this._config!.cache;
     try {
       const promise = this._graphs.map((graph, index) => {
@@ -844,19 +830,16 @@ class ChartsCard extends LitElement {
             data = [...graph.history];
           }
           if (this._config?.series[index].type !== 'column' && this._config?.series[index].extend_to) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const lastPoint = data.slice(-1)[0]!;
             if (
               this._config?.series[index].extend_to === 'end' &&
               lastPoint[0] < end.getTime() - this._serverTimeOffset
             ) {
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               data.push([end.getTime() - this._serverTimeOffset, lastPoint[1]]);
             } else if (
               this._config?.series[index].extend_to === 'now' &&
               lastPoint[0] < now.getTime() - this._serverTimeOffset
             ) {
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               data.push([now.getTime() - this._serverTimeOffset, lastPoint[1]]);
             }
           }
@@ -897,7 +880,6 @@ class ChartsCard extends LitElement {
               return [];
             }
             if (this._config?.chart_type === 'radialBar') {
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               return [getPercentFromValue(data, this._config.series[index].min, this._config.series[index].max)];
             } else {
               return [data];
@@ -926,9 +908,12 @@ class ChartsCard extends LitElement {
             type: 'vertical',
             colorStops: this._config.series_in_graph.map((serie, index) => {
               if (!serie.color_threshold || ![undefined, 'area', 'line'].includes(serie.type)) return [];
-              const min = this._graphs?.[serie.index]?.min;
+              let min = this._graphs?.[serie.index]?.min;
               const max = this._graphs?.[serie.index]?.max;
               if (min === undefined || max === undefined) return [];
+              const yaxis = Array.isArray(this._config?.apex_config?.yaxis) ? this._config?.apex_config?.yaxis?.[0] : this._config?.apex_config?.yaxis;
+              if (yaxis?.min !== undefined) min = typeof yaxis.min === 'number' ? yaxis.min : yaxis.min(min);
+              min = Math.max(0, min);
               return (
                 this._computeFillColorStops(serie, min, max, computeColor(this._colors[index]), serie.invert) || []
               );
@@ -1116,7 +1101,7 @@ class ChartsCard extends LitElement {
       },
     });
     if (withTime) {
-      let bgColorTime = tinycolor(computeColor('var(--card-background-color)'));
+      let bgColorTime = new TinyColor(computeColor('var(--card-background-color)'));
       bgColorTime =
         bgColorTime.isValid && bgColorTime.getLuminance() > 0.5 ? bgColorTime.darken(20) : bgColorTime.lighten(20);
       const txtColorTime = computeTextColor(bgColorTime.toHexString());
@@ -1182,7 +1167,6 @@ class ChartsCard extends LitElement {
     this._yAxisConfig?.map((yaxis) => {
       if (yaxis.min_type !== minmax_type.FIXED || yaxis.max_type !== minmax_type.FIXED) {
         const minMax = yaxis.series_id?.map((id) => {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const lMinMax = this._graphs![id]?.minMaxWithTimestampForYAxis(
             this._seriesOffset[id] ? new Date(start.getTime() + this._seriesOffset[id]).getTime() : start.getTime(),
             this._seriesOffset[id] ? new Date(end.getTime() + this._seriesOffset[id]).getTime() : end.getTime(),
@@ -1229,22 +1213,18 @@ class ChartsCard extends LitElement {
         }
         yaxis.series_id?.forEach((id) => {
           if (min !== null && yaxis.min_type !== minmax_type.FIXED) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             this._config!.apex_config!.yaxis![id].min = this._getMinMaxBasedOnType(
               true,
               min,
               yaxis.min as number,
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               yaxis.min_type!,
             );
           }
           if (max !== null && yaxis.max_type !== minmax_type.FIXED) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             this._config!.apex_config!.yaxis![id].max = this._getMinMaxBasedOnType(
               false,
               max,
               yaxis.max as number,
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               yaxis.max_type!,
             );
           }
@@ -1299,13 +1279,11 @@ class ChartsCard extends LitElement {
     series?.forEach((serie, index) => {
       if (
         this._config?.experimental?.color_threshold &&
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         (PLAIN_COLOR_TYPES.includes(this._config!.chart_type!) || serie.type === 'column') &&
         serie.color_threshold &&
         serie.color_threshold.length > 0
       ) {
         const colors = this._colors;
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         defaultColors[index] = function ({ value }, sortedL = serie.color_threshold!, defColor = colors[index]) {
           let returnValue = sortedL[0].color || defColor;
           sortedL.forEach((color) => {
@@ -1341,15 +1319,12 @@ class ChartsCard extends LitElement {
       if (thres.value > max && arr[index - 1]) {
         const factor = (max - arr[index - 1].value) / (thres.value - arr[index - 1].value);
         color = interpolateColor(
-          tinycolor(arr[index - 1].color || defColor).toHexString(),
-          tinycolor(thres.color || defColor).toHexString(),
+          new TinyColor(arr[index - 1].color || defColor).toHexString(),
+          new TinyColor(thres.color || defColor).toHexString(),
           factor,
         );
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const prevOp = arr[index - 1].opacity === undefined ? defaultOp : arr[index - 1].opacity!;
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const curOp = thres.opacity === undefined ? defaultOp : thres.opacity!;
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         if (prevOp > curOp) {
           opacity = (prevOp - curOp) * (1 - factor) + curOp;
         } else {
@@ -1359,13 +1334,11 @@ class ChartsCard extends LitElement {
       } else if (thres.value < min && arr[index + 1]) {
         const factor = (arr[index + 1].value - min) / (arr[index + 1].value - thres.value);
         color = interpolateColor(
-          tinycolor(arr[index + 1].color || defColor).toHexString(),
-          tinycolor(thres.color || defColor).toHexString(),
+          new TinyColor(arr[index + 1].color || defColor).toHexString(),
+          new TinyColor(thres.color || defColor).toHexString(),
           factor,
         );
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const nextOp = arr[index + 1].opacity === undefined ? defaultOp : arr[index + 1].opacity!;
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const curOp = thres.opacity === undefined ? defaultOp : thres.opacity!;
         if (nextOp > curOp) {
           opacity = (nextOp - curOp) * (1 - factor) + curOp;
@@ -1374,11 +1347,11 @@ class ChartsCard extends LitElement {
         }
         opacity = opacity < 0 ? -opacity : opacity;
       }
-      color = color || tinycolor(thres.color || defColor).toHexString();
-      if ([undefined, 'line'].includes(serie.type)) color = tinycolor(color).setAlpha(opacity).toHex8String();
+      color = color || new TinyColor(thres.color || defColor).toHexString();
+      if ([undefined, 'line'].includes(serie.type)) color = new TinyColor(color).setAlpha(opacity).toHex8String();
       return [
         {
-          color: color || tinycolor(thres.color || defColor).toHexString(),
+          color: color || new TinyColor(thres.color || defColor).toHexString(),
           offset:
             scale <= 0 ? 0 : invert ? 100 - (max - thres.value) * (100 / scale) : (max - thres.value) * (100 / scale),
           opacity,
@@ -1446,7 +1419,6 @@ class ChartsCard extends LitElement {
     }, series?.length > 0);
     if (onlyGroupBy) {
       offsetEnd = series?.reduce((acc, serie) => {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const dur = parse(serie.group_by.duration)!;
         if (acc === -1 || dur < acc) {
           return dur;
@@ -1469,7 +1441,6 @@ class ChartsCard extends LitElement {
     let start = new Date(end.getTime() - this._graphSpan + 1);
     const curMoment = moment();
     if ((this._hass?.locale as OverrideFrontendLocaleData).time_zone === 'server') {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       curMoment.tz(this._hass!.config.time_zone);
     }
     if (this._config?.span?.start) {
@@ -1501,7 +1472,6 @@ class ChartsCard extends LitElement {
         case 'hold':
         case 'double_tap':
           configDup.entity = configDup[`${ev.detail.action}_action`]?.entity || serieConfig.entity;
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           handleAction(this, this._hass!, configDup, ev.detail.action);
           break;
         default:
@@ -1523,7 +1493,6 @@ class ChartsCard extends LitElement {
         case 'hold':
         case 'double_tap':
           configDup.entity = configDup[`${ev.detail.action}_action`]?.entity;
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           handleAction(this, this._hass!, configDup, ev.detail.action);
           break;
         default:
@@ -1600,7 +1569,6 @@ class ChartsCard extends LitElement {
       const conditions: Array<(value: string) => boolean> = [];
 
       if (includeDomains?.length) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         conditions.push((eid) => includeDomains!.includes(eid.split('.')[0]));
       }
 
