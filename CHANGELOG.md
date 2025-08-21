@@ -1,3 +1,49 @@
+## [2.2.0](https://github.com/RomRider/apexcharts-card/compare/v2.1.2...v2.2.0) (2025-08-20)
+
+### Features
+
+* Display the card version on the card (useful for debugging) ([ac800c5](https://github.com/RomRider/apexcharts-card/commit/ac800c543669376ea531e0dadd0c18761e4d22c0))
+* **series:** Add option to hide null or zero values in the header ([#544](https://github.com/RomRider/apexcharts-card/issues/544)) ([baf2066](https://github.com/RomRider/apexcharts-card/commit/baf206600922be253fc431c720bb4ce54ed8b046)), closes [#543](https://github.com/RomRider/apexcharts-card/issues/543)
+* **series:** Extend `stroke_dash` to support an array for more complex dashing patterns ([#902](https://github.com/RomRider/apexcharts-card/issues/902)) ([cafbcec](https://github.com/RomRider/apexcharts-card/commit/cafbcec989725f0bd4d23cec9474aba2cffa5e3c))
+* Support for sections views using `section_mode` ([fe85144](https://github.com/RomRider/apexcharts-card/commit/fe85144b646f2470dcc329574662f778e2cedc46)), closes [#927](https://github.com/RomRider/apexcharts-card/issues/927) [#837](https://github.com/RomRider/apexcharts-card/issues/837) [#904](https://github.com/RomRider/apexcharts-card/issues/904) [#736](https://github.com/RomRider/apexcharts-card/issues/736)
+
+### Bug Fixes
+
+* graph rendering too wide when heading title is too long ([#812](https://github.com/RomRider/apexcharts-card/issues/812)) ([094280d](https://github.com/RomRider/apexcharts-card/commit/094280ddf56365fa8a1fc8372ec66d26f37d2972))
+* Text color selection for given background now takes into account human perception. ([#820](https://github.com/RomRider/apexcharts-card/issues/820)) ([f09756f](https://github.com/RomRider/apexcharts-card/commit/f09756ff33caa7a092de6a2492699fe3b0436d95))
+
+### Documentation
+
+* Fix typos and improve grammar in README.md ([#698](https://github.com/RomRider/apexcharts-card/issues/698)) ([6655949](https://github.com/RomRider/apexcharts-card/commit/665594979b9c39e5b02c04fc10b0a0b022874311))
+* Updated install instructions ([37f3fa2](https://github.com/RomRider/apexcharts-card/commit/37f3fa2820372d1480eda57455dfde980def5044))
+
+## 2.2.0-dev.3 (2025-08-20)
+
+* feat(series): Add option to hide null or zero values in the header (#544) ([baf2066](https://github.com/RomRider/apexcharts-card/commit/baf2066)), closes [#544](https://github.com/RomRider/apexcharts-card/issues/544) [#543](https://github.com/RomRider/apexcharts-card/issues/543)
+* chore(ci): Fix release notes generator ([8d204fc](https://github.com/RomRider/apexcharts-card/commit/8d204fc))
+
+## 2.2.0-dev.2 (2025-08-20)
+
+* docs: Fix typos and improve grammar in README.md (#698) ([6655949](https://github.com/RomRider/apexcharts-card/commit/6655949)), closes [#698](https://github.com/RomRider/apexcharts-card/issues/698)
+* docs: Updated install instructions ([37f3fa2](https://github.com/RomRider/apexcharts-card/commit/37f3fa2))
+* feat(series): Extend `stroke_dash` to support an array for more complex dashing patterns (#902) ([cafbcec](https://github.com/RomRider/apexcharts-card/commit/cafbcec)), closes [#902](https://github.com/RomRider/apexcharts-card/issues/902)
+* Fix: Text color selection for given background now takes into account human perception. (#820) ([f09756f](https://github.com/RomRider/apexcharts-card/commit/f09756f)), closes [#820](https://github.com/RomRider/apexcharts-card/issues/820)
+* chore(deps): Update release dependencies and some outdated packages ([07b901a](https://github.com/RomRider/apexcharts-card/commit/07b901a))
+
+## 2.2.0-dev.1 (2025-08-20)
+
+* chore: Update CI ([ad124f7](https://github.com/RomRider/apexcharts-card/commit/ad124f7))
+* chore(ci): update action/cache ([899dce3](https://github.com/RomRider/apexcharts-card/commit/899dce3))
+* chore(deps): bump actions/cache from 4.0.2 to 4.1.0 (#785) ([18b9c11](https://github.com/RomRider/apexcharts-card/commit/18b9c11)), closes [#785](https://github.com/RomRider/apexcharts-card/issues/785)
+* chore(deps): bump actions/checkout from 4 to 5 (#939) ([8dc5150](https://github.com/RomRider/apexcharts-card/commit/8dc5150)), closes [#939](https://github.com/RomRider/apexcharts-card/issues/939)
+* chore(deps): bump actions/setup-node from 4.0.2 to 4.0.4 (#779) ([505a35d](https://github.com/RomRider/apexcharts-card/commit/505a35d)), closes [#779](https://github.com/RomRider/apexcharts-card/issues/779)
+* chore(deps): bump actions/setup-node from 4.0.4 to 4.4.0 (#940) ([a8ba417](https://github.com/RomRider/apexcharts-card/commit/a8ba417)), closes [#940](https://github.com/RomRider/apexcharts-card/issues/940)
+* chore(dev): Remove leftover file ([2a63138](https://github.com/RomRider/apexcharts-card/commit/2a63138))
+* chore(dev): update devcontainer ([3f4f63a](https://github.com/RomRider/apexcharts-card/commit/3f4f63a))
+* feat: Display the card version on the card (useful for debugging) ([ac800c5](https://github.com/RomRider/apexcharts-card/commit/ac800c5))
+* feat: Support for sections views using `section_mode` ([fe85144](https://github.com/RomRider/apexcharts-card/commit/fe85144)), closes [#927](https://github.com/RomRider/apexcharts-card/issues/927) [#837](https://github.com/RomRider/apexcharts-card/issues/837) [#904](https://github.com/RomRider/apexcharts-card/issues/904) [#736](https://github.com/RomRider/apexcharts-card/issues/736)
+* fix: graph rendering too wide when heading title is too long (#812) ([094280d](https://github.com/RomRider/apexcharts-card/commit/094280d)), closes [#812](https://github.com/RomRider/apexcharts-card/issues/812)
+
 ### [2.1.2](https://github.com/RomRider/apexcharts-card/compare/v2.1.1...v2.1.2) (2024-07-10)
 
 

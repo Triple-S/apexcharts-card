@@ -2,6 +2,7 @@ export interface ChartCardExternalConfig {
   type: 'custom:apexcharts-card';
   config_templates?: string[] | string;
   color_list?: string[];
+  section_mode?: boolean;
   locale?: string;
   experimental?: {
     color_threshold?: boolean;
@@ -25,6 +26,7 @@ export interface ChartCardExternalConfig {
   show?: {
     loading?: boolean;
     last_updated?: boolean;
+    version?: boolean;
   };
   cache?: boolean;
   stacked?: boolean;
@@ -39,6 +41,10 @@ export interface ChartCardExternalConfig {
   card_mod?: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   view_layout?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  visibility?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  grid_options?: any;
   index?: number;
   view_index?: number;
   brush?: ChartCardBrushExtConfig;
@@ -73,7 +79,7 @@ export interface ChartCardAllSeriesExternalConfig {
   opacity?: number;
   curve?: 'smooth' | 'straight' | 'stepline' | 'monotoneCubic';
   stroke_width?: number;
-  stroke_dash?: number;
+  stroke_dash?: number | number[];
   extend_to?: false | 'end' | 'now';
   unit?: string;
   invert?: boolean;
@@ -115,6 +121,8 @@ export interface ChartCardSeriesShowConfigExt {
   legend_value?: boolean;
   in_header?: boolean | 'raw' | 'before_now' | 'after_now';
   name_in_header?: boolean;
+  null_in_header?: boolean;
+  zero_in_header?: boolean;
   header_color_threshold?: boolean;
   in_chart?: boolean;
   datalabels?: boolean | 'total' | 'percent';
