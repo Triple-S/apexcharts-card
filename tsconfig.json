@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2017",
+    "types": ["node"],
     "module": "esnext",
     "moduleResolution": "node",
     "lib": ["es2019", "dom", "dom.iterable"],

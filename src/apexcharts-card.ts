@@ -42,7 +42,7 @@ import {
   isUsingServerTimezone,
   computeTimezoneDiffWithLocal,
 } from './utils';
-import ApexCharts from 'apexcharts';
+import ApexCharts, { ApexOptions } from 'apexcharts';
 import { Ripple } from '@material/mwc-ripple';
 import { stylesApex } from './styles';
 import { HassEntity } from 'home-assistant-js-websocket';
@@ -505,11 +505,11 @@ class ChartsCard extends LitElement {
     // this._reset();
   }
 
-  private _generateYAxisConfig(config: ChartCardConfig): ApexYAxis[] | undefined {
+  private _generateYAxisConfig(config: ChartCardConfig): ApexOptions['yaxis'] {
     if (!config.yaxis) return undefined;
     const burned: boolean[] = [];
     this._yAxisConfig = JSON.parse(JSON.stringify(config.yaxis));
-    const yaxisConfig: ApexYAxis[] = config.series_in_graph.map((serie, serieIndex) => {
+    const yaxisConfig: ApexOptions['yaxis'] = config.series_in_graph.map((serie, serieIndex) => {
       let idx = -1;
       if (config.yaxis?.length !== 1) {
         idx = config.yaxis!.findIndex((yaxis) => {
@@ -783,14 +783,13 @@ class ChartsCard extends LitElement {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (layout as any).chart.id = Math.random().toString(36).substring(7);
       }
-      this._apexChart = new ApexCharts(graph, layout);
-      const promises: Promise<void>[] = [];
+      this._apexChart = new ApexCharts(graph as HTMLElement, layout as ApexOptions);
+      const promises: Promise<ApexCharts>[] = [];
       promises.push(this._apexChart.render());
       if (this._config.series_in_brush.length && brush) {
-        this._apexBrush = new ApexCharts(
-          brush,
+        this._apexBrush = new ApexCharts(brush as HTMLElement,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          getBrushLayoutConfig(this._config, this._hass, (layout as any).chart.id),
+          getBrushLayoutConfig(this._config, this._hass, (layout as any).chart.id) as ApexOptions,
         );
         promises.push(this._apexBrush.render());
       }
@@ -971,7 +970,7 @@ class ChartsCard extends LitElement {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const currentMax = (this._apexChart as any).axes?.w?.globals?.maxX;
       this._headerState = [...this._headerState];
-      const chartUpdates: Promise<void>[] = [];
+      const chartUpdates: Promise<ApexCharts>[] = [];
       chartUpdates.push(
         this._apexChart?.updateOptions(
           graphData,

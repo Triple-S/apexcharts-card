@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable max-classes-per-file */
 import type { Ripple } from '@material/mwc-ripple';
 import { noChange } from 'lit';
 import { AttributePart, directive, Directive, DirectiveParameters } from 'lit/directive.js';
@@ -10,6 +8,7 @@ import { ActionHandlerOptions } from './types';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || (navigator as any).msMaxTouchPoints > 0;
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 interface ActionHandler extends HTMLElement {
   holdTime: number;
   bind(element: Element, options?: ActionHandlerOptions): void;
@@ -29,6 +28,7 @@ declare global {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 class ActionHandler extends HTMLElement implements ActionHandler {
   public holdTime = 500;
 
@@ -218,7 +218,6 @@ const getActionHandler = (): ActionHandler => {
   return actionhandler as ActionHandler;
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const actionHandlerBind = (element: ActionHandlerElement, options?: ActionHandlerOptions) => {
   const actionhandler: ActionHandler = getActionHandler();
   if (!actionhandler) {
@@ -234,7 +233,7 @@ export const actionHandler = directive(
       return noChange;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     render(_options?: ActionHandlerOptions) {}
   },
 );
