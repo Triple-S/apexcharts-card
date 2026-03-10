@@ -277,27 +277,15 @@ export default class GraphEntry {
               lastNonNull,
             );
 
-            let displayDate: Date | null = null;
-            const startDate = new Date(item.start);
-            if (!this._config.statistics?.align || this._config.statistics?.align === 'middle') {
-              if (this._config.statistics?.period === '5minute') {
-                displayDate = new Date(startDate.getTime() + 150000); // 2min30s
-              } else if (!this._config.statistics?.period || this._config.statistics.period === 'hour') {
-                displayDate = new Date(startDate.getTime() + 1800000); // 30min
-              } else if (this._config.statistics.period === 'day') {
-                displayDate = new Date(startDate.getTime() + 43200000); // 12h
-              } else if (this._config.statistics.period === 'week') {
-                displayDate = new Date(startDate.getTime() + 259200000); // 3.5d
-              } else {
-                displayDate = new Date(startDate.getTime() + 1296000000); // 15d
-              }
-            } else if (this._config.statistics.align === 'start') {
-              displayDate = new Date(item.start);
-            } else {
-              displayDate = new Date(item.end);
-            }
+            let displayDate: number | null = null;
+            if (!this._config.statistics?.align || this._config.statistics?.align === 'middle')
+              displayDate = (Number(item.start) + Number(item.end)) / 2;
+            else if (this._config.statistics.align === 'start')
+              displayDate = Number(item.start);
+            else
+              displayDate = Number(item.end);
 
-            return [displayDate.getTime(), !Number.isNaN(stateParsed) ? stateParsed : null];
+            return [displayDate, !Number.isNaN(stateParsed) ? stateParsed : null];
           });
         }
       } else {
@@ -472,12 +460,22 @@ export default class GraphEntry {
       start_time: start?.toISOString(),
       end_time: end?.toISOString(),
       statistic_ids: [this._entityID],
-      period,
+      period: period.replace('+hour', ''),
     });
-    if (statistics && this._entityID in statistics) {
-      return statistics[this._entityID];
+
+    const firstTime = Number(statistics?.[this._entityID]?.[0]?.start ?? end?.getTime() ?? Date.now());
+    if (period == '5minute+hour' && start && (firstTime - start.getTime()) > 300000) {
+      const statisticsLong = await this._hass?.callWS<Statistics>({
+        type: 'recorder/statistics_during_period',
+        start_time: start?.toISOString(),
+        end_time: new Date(Math.floor(firstTime / 3600000) * 3600000 - 1).toISOString(),
+        statistic_ids: [this._entityID],
+        period: 'hour',
+      });
+      return [...(statisticsLong?.[this._entityID] ?? []), ...(statistics?.[this._entityID] ?? [])];
     }
-    return undefined;
+
+    return statistics?.[this._entityID];
   }
 
   private _dataBucketer(history: EntityEntryCache, timeRange: DateRange): HistoryBuckets {
