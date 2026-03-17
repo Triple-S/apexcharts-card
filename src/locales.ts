@@ -1,6 +1,7 @@
 import * as ar from 'apexcharts/dist/locales/ar.json';
 import * as be_cyrl from 'apexcharts/dist/locales/be-cyrl.json';
 import * as be_latn from 'apexcharts/dist/locales/be-latn.json';
+import * as bg from 'apexcharts/dist/locales/bg.json';
 import * as ca from 'apexcharts/dist/locales/ca.json';
 import * as cs from 'apexcharts/dist/locales/cs.json';
 import * as da from 'apexcharts/dist/locales/da.json';
@@ -30,15 +31,16 @@ import * as nl from 'apexcharts/dist/locales/nl.json';
 import * as pl from 'apexcharts/dist/locales/pl.json';
 import * as pt_br from 'apexcharts/dist/locales/pt-br.json';
 import * as pt from 'apexcharts/dist/locales/pt.json';
-import * as rs from 'apexcharts/dist/locales/rs.json';
+import * as ro from 'apexcharts/dist/locales/ro.json';
 import * as ru from 'apexcharts/dist/locales/ru.json';
-import * as se from 'apexcharts/dist/locales/se.json';
 import * as sk from 'apexcharts/dist/locales/sk.json';
 import * as sl from 'apexcharts/dist/locales/sl.json';
 import * as sq from 'apexcharts/dist/locales/sq.json';
+import * as sr from 'apexcharts/dist/locales/sr.json';
+import * as sv from 'apexcharts/dist/locales/sv.json';
 import * as th from 'apexcharts/dist/locales/th.json';
 import * as tr from 'apexcharts/dist/locales/tr.json';
-import * as ua from 'apexcharts/dist/locales/ua.json';
+import * as uk from 'apexcharts/dist/locales/uk.json';
 import * as vi from 'apexcharts/dist/locales/vi.json';
 import * as zh_cn from 'apexcharts/dist/locales/zh-cn.json';
 import * as zh_tw from 'apexcharts/dist/locales/zh-tw.json';
@@ -48,6 +50,7 @@ export function getLocales(): Record<string, unknown> {
     ar: ar,
     'be-cyrl': be_cyrl,
     'be-latn': be_latn,
+    bg: bg,
     ca: ca,
     cs: cs,
     da: da,
@@ -77,15 +80,16 @@ export function getLocales(): Record<string, unknown> {
     pl: pl,
     'pt-br': pt_br,
     pt: pt,
-    rs: rs,
+    ro: ro,
     ru: ru,
-    se: se,
     sk: sk,
     sl: sl,
     sq: sq,
+    sr: sr,
+    sv: sv,
     th: th,
     tr: tr,
-    ua: ua,
+    uk: uk,
     vi: vi,
     'zh-cn': zh_cn,
     'zh-tw': zh_tw,
