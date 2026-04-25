@@ -935,11 +935,11 @@ class ChartsCard extends LitElement {
             colorStops: this._config.series_in_graph.map((serie, index) => {
               if (!serie.color_threshold || ![undefined, 'area', 'line'].includes(serie.type)) return [];
               let min = this._graphs?.[serie.index]?.min;
-              const max = this._graphs?.[serie.index]?.max;
+              let max = this._graphs?.[serie.index]?.max;
               if (min === undefined || max === undefined) return [];
               const yaxis = Array.isArray(this._config?.apex_config?.yaxis) ? this._config?.apex_config?.yaxis?.[0] : this._config?.apex_config?.yaxis;
-              if (yaxis?.min !== undefined) min = typeof yaxis.min === 'number' ? yaxis.min : yaxis.min(min);
-              min = Math.max(0, min);
+              if (min > 0 && yaxis?.min !== undefined) min = typeof yaxis.min === 'number' ? yaxis.min : yaxis.min(min);
+              if (max < 0 && yaxis?.max !== undefined) max = typeof yaxis.max === 'number' ? yaxis.max : yaxis.max(max);
               return (
                 this._computeFillColorStops(serie, min, max, computeColor(this._colors[index]), serie.invert) || []
               );
