@@ -3,7 +3,8 @@ import { extendMoment } from 'moment-range';
 import momentDurationFormatSetup from 'moment-duration-format';
 
 momentDurationFormatSetup(Moment);
-export const moment = extendMoment(Moment);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const moment = extendMoment(Moment as any);
 export const ONE_HOUR = 1000 * 3600;
 export const HOUR_24 = ONE_HOUR * 24;
 
